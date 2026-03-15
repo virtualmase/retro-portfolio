@@ -1,1 +1,376 @@
 
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Barlow+Condensed:wght@300;400;600;700&family=IBM+Plex+Sans:wght@300;400&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+.desktop{
+  min-height:640px;
+  background:#787878;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.03) 1px,rgba(0,0,0,0.03) 2px),
+    repeating-linear-gradient(90deg,transparent,transparent 1px,rgba(0,0,0,0.02) 1px,rgba(0,0,0,0.02) 2px);
+  padding:20px;
+  font-family:'IBM Plex Sans',sans-serif;
+}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.topbar-left{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1.5px;}
+.topbar-right{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1px;}
+
+.window{
+  background:#C0C0C0;
+  border-top:2px solid #FFFFFF;border-left:2px solid #FFFFFF;
+  border-right:2px solid #404040;border-bottom:2px solid #404040;
+  max-width:880px;margin:0 auto;
+}
+
+.titlebar{
+  background:linear-gradient(90deg,#000080,#1084d0);
+  padding:5px 8px;display:flex;align-items:center;justify-content:space-between;
+}
+
+.titlebar-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#fff;letter-spacing:0.5px;display:flex;align-items:center;gap:8px;
+}
+
+.titlebar-icon{
+  width:14px;height:14px;background:#C0C0C0;border:1px solid #fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;color:#000080;font-weight:700;font-family:'JetBrains Mono',monospace;
+}
+
+.win-controls{display:flex;gap:3px;}
+.win-btn{
+  width:16px;height:14px;background:#C0C0C0;
+  border-top:1px solid #fff;border-left:1px solid #fff;
+  border-right:1px solid #404040;border-bottom:1px solid #404040;
+  cursor:pointer;font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:#000;display:flex;align-items:center;justify-content:center;
+}
+
+.menubar{
+  background:#C0C0C0;border-bottom:1px solid #808080;
+  padding:3px 8px;display:flex;gap:0;
+}
+
+.menu-item{
+  font-family:'IBM Plex Sans',sans-serif;font-size:12px;
+  color:#000;padding:2px 10px;cursor:pointer;font-weight:300;
+}
+.menu-item:hover{background:#000080;color:#fff;}
+.menu-item.active{background:#000080;color:#fff;}
+
+.window-body{display:flex;min-height:480px;}
+
+.sidebar{
+  width:185px;border-right:2px solid #808080;border-right-style:inset;
+  background:#D4D0C8;padding:0;flex-shrink:0;
+}
+
+.sidebar-title{
+  background:#808080;padding:5px 10px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:2px;color:#fff;text-transform:uppercase;border-bottom:1px solid #606060;
+}
+
+.nav-item{
+  display:flex;align-items:center;gap:6px;padding:8px 10px;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#202020;
+  letter-spacing:0.5px;border-bottom:1px solid rgba(0,0,0,0.06);user-select:none;
+}
+.nav-item:hover{background:#000080;color:#fff;}
+.nav-item.active{background:#000080;color:#fff;}
+
+.nav-icon{
+  width:14px;height:14px;flex-shrink:0;background:#C0C0C0;
+  border-top:1px solid #fff;border-left:1px solid #fff;
+  border-right:1px solid #808080;border-bottom:1px solid #808080;
+  font-size:8px;display:flex;align-items:center;justify-content:center;
+}
+.nav-item.active .nav-icon,.nav-item:hover .nav-icon{background:#6060C0;color:#fff;}
+
+.sidebar-divider{height:1px;background:#808080;margin:8px 0;}
+.sys-panel{padding:8px 10px;}
+.sys-row{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:#404040;padding:2px 0;}
+.sys-val{color:#000080;font-weight:500;}
+
+.main{flex:1;padding:28px 32px;background:#C0C0C0;overflow:hidden;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.statusbar-row{display:flex;align-items:center;gap:8px;margin-bottom:20px;}
+.status-pill{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;background:#000080;color:#fff;padding:2px 8px;}
+.status-path{font-family:'JetBrains Mono',monospace;font-size:9px;color:#606060;letter-spacing:1px;}
+
+.hero-name{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:700;color:#0a0a0a;line-height:0.9;letter-spacing:-1px;text-transform:uppercase;margin-bottom:2px;}
+.hero-name span{color:#000080;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:300;letter-spacing:6px;text-transform:uppercase;color:#404040;margin-bottom:20px;padding-left:3px;}
+.rule{height:2px;width:100%;background:linear-gradient(90deg,#000080 0%,#808080 60%,transparent 100%);margin-bottom:20px;}
+
+.bio-text{font-family:'IBM Plex Sans',sans-serif;font-size:13px;line-height:1.75;color:#202020;font-weight:300;max-width:500px;margin-bottom:12px;}
+
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:20px;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;padding:3px 8px;text-transform:uppercase;color:#fff;background:#606060;border-top:1px solid #909090;border-left:1px solid #909090;border-right:1px solid #303030;border-bottom:1px solid #303030;}
+
+.data-grid{margin-top:24px;border-top:2px solid #808080;border-left:2px solid #808080;border-right:2px solid #fff;border-bottom:2px solid #fff;}
+.grid-head{background:#000080;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#fff;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;}
+.grid-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-bottom:1px solid #b0b0b0;font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#202020;font-weight:300;cursor:pointer;text-decoration:none;}
+.grid-row:last-child{border-bottom:none;}
+.grid-row:hover{background:#000080;color:#fff;}
+.grid-row:hover .gbadge{background:#fff;color:#000080;}
+.gbadge{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;padding:2px 6px;text-transform:uppercase;background:#606060;color:#fff;}
+
+.sect-title{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:600;color:#0a0a0a;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.sect-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#606060;margin-bottom:20px;}
+
+.proj-card{
+  border-top:2px solid #fff;border-left:2px solid #fff;
+  border-right:2px solid #808080;border-bottom:2px solid #808080;
+  padding:16px 18px;margin-bottom:10px;background:#D4D0C8;
+  display:block;text-decoration:none;cursor:pointer;
+}
+.proj-card:hover{background:#C0BEBA;}
+.proj-card:hover .proj-title{color:#000080;}
+
+.proj-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px;}
+.proj-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:600;color:#0a0a0a;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;transition:color 0.1s;}
+.proj-url{font-family:'JetBrains Mono',monospace;font-size:9px;color:#000080;letter-spacing:0.5px;margin-bottom:8px;}
+.proj-desc{font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#303030;font-weight:300;line-height:1.65;}
+.proj-tags{display:flex;gap:5px;margin-top:10px;}
+
+.exp-entry{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid #909090;}
+.exp-entry:last-child{border-bottom:none;}
+.exp-year{font-family:'JetBrains Mono',monospace;font-size:9px;color:#000080;letter-spacing:1px;padding-top:4px;}
+.exp-role{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:600;color:#0a0a0a;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;}
+.exp-co{font-family:'JetBrains Mono',monospace;font-size:9px;color:#000080;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.exp-desc{font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:#303030;font-weight:300;line-height:1.65;}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.contact-card{border-top:2px solid #fff;border-left:2px solid #fff;border-right:2px solid #808080;border-bottom:2px solid #808080;padding:14px 16px;cursor:pointer;background:#D4D0C8;}
+.contact-card:hover{background:#C8C4BC;}
+.contact-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#000080;margin-bottom:5px;}
+.contact-val{font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:#101010;font-weight:300;}
+
+.win-statusbar{border-top:2px solid #808080;background:#C0C0C0;display:flex;overflow:hidden;}
+.wsb-cell{padding:3px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#303030;letter-spacing:0.5px;border-right:2px inset #808080;}
+</style>
+
+<div class="desktop">
+  <div class="topbar">
+    <div class="topbar-left">VIRTUALMASE.EXE // PORTFOLIO SYSTEM</div>
+    <div class="topbar-right" id="clock">--:--:-- --</div>
+  </div>
+
+  <div class="window">
+    <div class="titlebar">
+      <div class="titlebar-title">
+        <div class="titlebar-icon">V</div>
+        VIRTUALMASE — PORTFOLIO.EXE
+      </div>
+      <div class="win-controls">
+        <div class="win-btn">_</div>
+        <div class="win-btn">□</div>
+        <div class="win-btn">✕</div>
+      </div>
+    </div>
+
+    <div class="menubar">
+      <div class="menu-item active" data-panel="home" onclick="switchPanel(this)">Home</div>
+      <div class="menu-item" data-panel="projects" onclick="switchPanel(this)">Projects</div>
+      <div class="menu-item" data-panel="experience" onclick="switchPanel(this)">Experience</div>
+      <div class="menu-item" data-panel="contact" onclick="switchPanel(this)">Contact</div>
+    </div>
+
+    <div class="window-body">
+      <div class="sidebar">
+        <div class="sidebar-title">Root Dir</div>
+        <div class="nav-item active" data-panel="home" onclick="switchPanel(this)"><div class="nav-icon">H</div> HOME</div>
+        <div class="nav-item" data-panel="projects" onclick="switchPanel(this)"><div class="nav-icon">P</div> PROJECTS</div>
+        <div class="nav-item" data-panel="experience" onclick="switchPanel(this)"><div class="nav-icon">E</div> EXPERIENCE</div>
+        <div class="nav-item" data-panel="contact" onclick="switchPanel(this)"><div class="nav-icon">C</div> CONTACT</div>
+        <div class="sidebar-divider"></div>
+        <div class="sys-panel">
+          <div class="sys-row"><span>UPTIME</span><span class="sys-val" id="uptime-val">0s</span></div>
+          <div class="sys-row"><span>BUILD</span><span class="sys-val">v2.6.1</span></div>
+          <div class="sys-row"><span>LOC</span><span class="sys-val">COLORADO</span></div>
+          <div class="sys-row"><span>STATUS</span><span class="sys-val">ACTIVE</span></div>
+        </div>
+      </div>
+
+      <div class="main">
+
+        <!-- HOME -->
+        <div class="panel active" id="panel-home">
+          <div class="statusbar-row">
+            <div class="status-pill">ONLINE</div>
+            <div class="status-path">C:\VIRTUALMASE\HOME</div>
+          </div>
+          <div class="hero-name">VIRTUAL<span>MASE</span></div>
+          <div class="hero-title">SEO Strategist &amp; Systems Architect</div>
+          <div class="rule"></div>
+          <p class="bio-text">Senior SEO strategist and systems architect with deep experience in technical search engine optimization and enterprise digital growth. Currently building across agentic AI, brand signal infrastructure, and institutional longevity technology.</p>
+          <p class="bio-text">Pioneered technical search frameworks and agentic swarm architectures that bridge the gap between AI technology and real-world industry outcomes.</p>
+          <div class="tag-row">
+            <div class="tag">SEO Strategy</div>
+            <div class="tag">Systems Architecture</div>
+            <div class="tag">Agentic AI</div>
+            <div class="tag">Digital Growth</div>
+            <div class="tag">Colorado</div>
+          </div>
+          <div class="data-grid">
+            <div class="grid-head"><span>CURRENT_PROJECTS</span><span>STATUS</span></div>
+            <a class="grid-row" href="https://arm-agency.com/" target="_blank"><span>ARM Agents // Agentic AI OS</span><span class="gbadge">Live</span></a>
+            <a class="grid-row" href="https://autonomousresourcemanagement.xyz/" target="_blank"><span>Autonomous Resource Mgmt // Signal Architecture</span><span class="gbadge">Live</span></a>
+            <a class="grid-row" href="https://monumentlabs.space/" target="_blank"><span>Monument Labs // Longevity OS</span><span class="gbadge">Active</span></a>
+          </div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="panel" id="panel-projects">
+          <div class="statusbar-row">
+            <div class="status-pill">DIR</div>
+            <div class="status-path">C:\VIRTUALMASE\PROJECTS</div>
+          </div>
+          <div class="sect-title">Projects</div>
+          <div class="sect-sub">Active builds &amp; live deployments</div>
+
+          <a class="proj-card" href="https://arm-agency.com/" target="_blank">
+            <div class="proj-header">
+              <div class="proj-title">ARM Agents</div>
+              <div class="gbadge">Live</div>
+            </div>
+            <div class="proj-url">arm-agency.com</div>
+            <div class="proj-desc">The Agentic AI Operating System. A futureproof, failproof durable execution fabric for the Agentic Internet Era — protocol-native MCP / A2A / ACP with zero-loss resilience, carbon-aware orchestration, and human-aligned safety by design.</div>
+            <div class="proj-tags">
+              <div class="tag">Agentic AI</div><div class="tag">MCP</div><div class="tag">Systems</div><div class="tag">Infrastructure</div>
+            </div>
+          </a>
+
+          <a class="proj-card" href="https://autonomousresourcemanagement.xyz/" target="_blank">
+            <div class="proj-header">
+              <div class="proj-title">Autonomous Resource Management</div>
+              <div class="gbadge">Live</div>
+            </div>
+            <div class="proj-url">autonomousresourcemanagement.xyz</div>
+            <div class="proj-desc">AI-native signal architecture for brands. Architects brands as high-integrity signal sources — trusted by machines, valued by markets. Operates at the intersection of capital and code to transform brand presence into structured, machine-readable knowledge graphs.</div>
+            <div class="proj-tags">
+              <div class="tag">Brand Signal</div><div class="tag">AIO</div><div class="tag">SEO</div><div class="tag">AI Infrastructure</div>
+            </div>
+          </a>
+
+          <a class="proj-card" href="https://monumentlabs.space/" target="_blank">
+            <div class="proj-header">
+              <div class="proj-title">Monument Labs</div>
+              <div class="gbadge">Active</div>
+            </div>
+            <div class="proj-url">monumentlabs.space</div>
+            <div class="proj-desc">Institutional Longevity OS. Bridges the infrastructure gap in human biology — unifying predictive intelligence and precision synthesis into an institutional-grade operating system for human healthspan. Nodes active in Irvine, Monument, Helsinki, and Singapore.</div>
+            <div class="proj-tags">
+              <div class="tag">Longevity</div><div class="tag">BioTech</div><div class="tag">AI</div><div class="tag">Infrastructure</div>
+            </div>
+          </a>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div class="panel" id="panel-experience">
+          <div class="statusbar-row">
+            <div class="status-pill">DIR</div>
+            <div class="status-path">C:\VIRTUALMASE\EXPERIENCE</div>
+          </div>
+          <div class="sect-title">Experience</div>
+          <div class="sect-sub">Professional history</div>
+          <div class="exp-entry">
+            <div class="exp-year">2023 — NOW</div>
+            <div>
+              <div class="exp-role">Senior SEO Strategist</div>
+              <div class="exp-co">Swell Marketing</div>
+              <div class="exp-desc">Leading enterprise-level organic growth initiatives. Architecting technical SEO frameworks and building agentic workflows to automate and scale search performance.</div>
+            </div>
+          </div>
+          <div class="exp-entry">
+            <div class="exp-year">2021 — 2023</div>
+            <div>
+              <div class="exp-role">Systems Architect</div>
+              <div class="exp-co">Independent / Consulting</div>
+              <div class="exp-desc">Designed and deployed digital infrastructure across wellness, media, and e-commerce. Focused on systems clarity, performance, and maintainable growth at scale.</div>
+            </div>
+          </div>
+          <div class="exp-entry">
+            <div class="exp-year">2018 — 2021</div>
+            <div>
+              <div class="exp-role">Digital Growth Strategist</div>
+              <div class="exp-co">Agency Background</div>
+              <div class="exp-desc">Drove multi-channel SEO and content strategy for national brands. Developed internal tooling that reduced reporting overhead by 60% while increasing organic visibility.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="panel" id="panel-contact">
+          <div class="statusbar-row">
+            <div class="status-pill">DIR</div>
+            <div class="status-path">C:\VIRTUALMASE\CONTACT</div>
+          </div>
+          <div class="sect-title">Contact</div>
+          <div class="sect-sub">Open to collaboration &amp; consulting</div>
+          <p class="bio-text">Currently available for consulting engagements, strategic partnerships, and select project builds. Reach out via any of the channels below.</p>
+          <div class="contact-grid">
+            <div class="contact-card">
+              <div class="contact-label">Email</div>
+              <div class="contact-val">hello@virtualmase.com</div>
+            </div>
+            <div class="contact-card">
+              <div class="contact-label">LinkedIn</div>
+              <div class="contact-val">linkedin.com/in/virtualmase</div>
+            </div>
+            <div class="contact-card">
+              <div class="contact-label">Location</div>
+              <div class="contact-val">Colorado, USA</div>
+            </div>
+            <div class="contact-card">
+              <div class="contact-label">Availability</div>
+              <div class="contact-val">Open — Q2 2026</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="win-statusbar">
+      <div class="wsb-cell" id="panel-indicator">HOME</div>
+      <div class="wsb-cell">VIRTUALMASE.EXE</div>
+      <div class="wsb-cell" id="clock2">--:--</div>
+      <div class="wsb-cell">UTF-8</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchPanel(el) {
+  document.querySelectorAll('.nav-item,.menu-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panel = el.dataset.panel;
+  document.querySelectorAll('[data-panel="'+panel+'"]').forEach(n => n.classList.add('active'));
+  document.getElementById('panel-' + panel).classList.add('active');
+  document.getElementById('panel-indicator').textContent = panel.toUpperCase();
+}
+
+let startTime = Date.now();
+function updateClock() {
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  const str = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0') + ' ' + ampm;
+  document.getElementById('clock').textContent = str;
+  document.getElementById('clock2').textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ' ' + ampm;
+  const up = Math.floor((Date.now() - startTime) / 1000);
+  document.getElementById('uptime-val').textContent = up < 60 ? up + 's' : up < 3600 ? Math.floor(up/60) + 'm' : Math.floor(up/3600) + 'h';
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
